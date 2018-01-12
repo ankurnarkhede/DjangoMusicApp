@@ -1,4 +1,24 @@
 
+{#loads the path to ur static files#}
+{% load staticfiles %}
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" >
+  <link href="https://fonts.googleapis.com/icon?family=Satisfy" rel="stylesheet"><link rel="stylesheet" type="text/css" href="{% static 'music/style.css' %}">
+<script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="  crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
+
+
+
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+
+{#        logo#}
+        <div class="navbar-header">
+            <a class="navbar-brand" href="{% url 'music:index' %}">Viberr</a>
+        </div>
+
+    </div>
+</nav>
+
 {% if all_albums %}
     <h3>Here are all my albums</h3>
     <ul>
