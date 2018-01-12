@@ -446,41 +446,46 @@ model</ColNames>
       <DataType>integer|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="110" parent="14" name="music_song_95c3b9df">
+    <column id="110" parent="14" name="is_favorite">
+      <Position>4</Position>
+      <DataType>bool|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="111" parent="14" name="music_song_95c3b9df">
       <ColNames>album_id</ColNames>
     </index>
-    <key id="111" parent="14">
+    <key id="112" parent="14">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="112" parent="14">
+    <foreign-key id="113" parent="14">
       <ColNames>album_id</ColNames>
       <RefTableName>music_album</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="113" parent="15" name="type">
+    <column id="114" parent="15" name="type">
       <DataType>text|0</DataType>
     </column>
-    <column id="114" parent="15" name="name">
+    <column id="115" parent="15" name="name">
       <Position>1</Position>
       <DataType>text|0</DataType>
     </column>
-    <column id="115" parent="15" name="tbl_name">
+    <column id="116" parent="15" name="tbl_name">
       <Position>2</Position>
       <DataType>text|0</DataType>
     </column>
-    <column id="116" parent="15" name="rootpage">
+    <column id="117" parent="15" name="rootpage">
       <Position>3</Position>
       <DataType>integer|0</DataType>
     </column>
-    <column id="117" parent="15" name="sql">
+    <column id="118" parent="15" name="sql">
       <Position>4</Position>
       <DataType>text|0</DataType>
     </column>
-    <column id="118" parent="16" name="name">
+    <column id="119" parent="16" name="name">
       <DataType>|0</DataType>
     </column>
-    <column id="119" parent="16" name="seq">
+    <column id="120" parent="16" name="seq">
       <Position>1</Position>
       <DataType>|0</DataType>
     </column>
