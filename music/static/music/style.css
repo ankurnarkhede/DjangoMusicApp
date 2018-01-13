@@ -1,7 +1,9 @@
 
 
 body{
-    background: white url("images/bg.jpg");
+    background: white url("images/bg1.jpg");
+    background-repeat: no-repeat;
+    background-size: 100%;
 }
 
 .navbar{
