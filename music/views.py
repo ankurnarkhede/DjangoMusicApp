@@ -4,10 +4,14 @@ from django.views import generic
 from django.views.generic import View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.core.urlresolvers import reverse_lazy
-from .models import Album
+from django.core.urlresolvers import reverse
 from .forms import UserForm
+from django.http import JsonResponse
+from django.db.models import Q
+from django.shortcuts import render, get_object_or_404
+from .models import Album, Song
 
 
 class IndexView(generic.ListView):
@@ -70,6 +74,59 @@ class UserFormView(View):
                     return redirect('music:index')
 
         return render (request, self.template_name, {'form': form})
+
+
+def logout_user(request):
+    logout (request)
+    form = UserForm (request.POST or None)
+    context = {
+        "form": form,
+    }
+    return render (request, 'music/login.html', context)
+
+
+def login_user(request):
+    if request.method == "POST":
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                albums = Album.objects.filter(user=request.user)
+                return render(request, 'music/index.html', {'albums': albums})
+            else:
+                return render(request, 'music/login.html', {'error_message': 'Your account has been disabled'})
+        else:
+            return render(request, 'music/login.html', {'error_message': 'Invalid login'})
+    return render(request, 'music/login.html')
+
+
+
+# def register(request):
+#     form = UserForm(request.POST or None)
+#     if form.is_valid():
+#         user = form.save(commit=False)
+#         username = form.cleaned_data['username']
+#         password = form.cleaned_data['password']
+#         user.set_password(password)
+#         user.save()
+#         user = authenticate(username=username, password=password)
+#         if user is not None:
+#             if user.is_active:
+#                 login(request, user)
+#                 albums = Album.objects.filter(user=request.user)
+#                 return render(request, 'music/index.html', {'albums': albums})
+#     context = {
+#         "form": form,
+#     }
+#     return render(request, 'music/register.html', context)
+#
+#
+
+
+
+
 
 
 
