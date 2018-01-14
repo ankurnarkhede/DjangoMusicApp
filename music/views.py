@@ -32,8 +32,6 @@ class DetailView(generic.DetailView):
     model = Album
     template_name ='music/detail.html'
 
-
-
 class AlbumCreate(CreateView):
     model = Album
     fields = ['artist', 'album_title', 'genre', 'album_logo']
@@ -45,6 +43,27 @@ class AlbumUpdate(UpdateView):
 class AlbumDelete(DeleteView):
     model = Album
     success_url = reverse_lazy('music:index')
+
+
+    
+# song crud
+class SongCreate(CreateView):
+    model = Song
+    fields = ['album', 'audio_file', 'song_title', 'is_favorite']
+
+class SongUpdate(UpdateView):
+    model = Song
+    fields = ['album', 'audio_file', 'song_title', 'is_favorite']
+
+class SongDelete(DeleteView):
+    model = Song
+
+    def get_success_url(self):
+        album = self.object.album
+        return reverse_lazy ('music:detail', kwargs={'pk': album.id})
+
+
+    
 
 
 class UserFormView(View):

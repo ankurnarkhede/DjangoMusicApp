@@ -18,10 +18,12 @@ class Album(models.Model):
 
 class Song(models.Model):
     album=models.ForeignKey(Album, on_delete=models.CASCADE)
-    file_type=models.CharField(max_length=10)
+    audio_file=models.FileField()
     song_title=models.CharField(max_length=250)
     is_favorite=models.BooleanField(default=False)
 
+    def get_absolute_url(self):
+        return reverse('music:detail', kwargs={'pk': self.album.pk} )
 
     def __str__(self):
         "returns default name"

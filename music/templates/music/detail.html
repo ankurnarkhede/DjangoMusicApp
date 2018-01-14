@@ -21,6 +21,11 @@
                     </a>
                     <h1>{{ album.album_title }} <small>{{ album.genre }}</small></h1>
                     <h2>{{ album.artist }}</h2>
+                    <a href="{% url 'music:album-update' album.id %}">
+                        <button type="submit" class="btn btn-info btn-xs">
+                            <span class="glyphicon glyphicon-edit"></span>&nbsp; Edit
+                        </button>
+                    </a>
                 </div>
             </div>
         </div>
@@ -30,7 +35,7 @@
 
             <ul class="nav nav-pills" style="margin-bottom: 10px;">
                 <li role="presentation" class="active"><a href="{% url 'music:detail' album.id %}">View All</a></li>
-                <li role="presentation"><a href="">Add New Song</a></li>
+                <li role="presentation"><a href="{% url 'music:song-add' %}">Add New Song</a></li>
             </ul>
 
             <div class="panel panel-default">
@@ -56,7 +61,7 @@
                             <tr>
                                 <td>{{ song.song_title }}</td>
                                 <td>
-                                    <a target="_blank" href="">
+                                    <a target="_blank" href="{{ song.audio_file.url }}">
                                         <button type="button" class="btn btn-success btn-xs">
                                             <span class="glyphicon glyphicon-play"></span>&nbsp; Play
                                         </button>
@@ -66,13 +71,18 @@
                                     <a href="" class="btn-favorite"><span class="glyphicon glyphicon-star {% if song.is_favorite %}active{% endif %}"></span></a>
                                 </td>
                                 <td>
-                                    <form action="" method="post" style="display: inline;">
+                                    <form action="{% url 'music:song-delete' song.id %}" method="post" style="display: inline;">
                                         {% csrf_token %}
                                         <input type="hidden" name="song_id" value="" />
                                         <button type="submit" class="btn btn-danger btn-xs">
                                             <span class="glyphicon glyphicon-remove"></span>&nbsp; Delete
                                         </button>
                                     </form>
+                                    <a href="{% url 'music:song-update' song.id %}">
+                                        <button type="submit" class="btn btn-info btn-xs">
+                                            <span class="glyphicon glyphicon-edit"></span>&nbsp; Edit
+                                        </button>
+                                    </a>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -90,37 +100,4 @@
 
 {% endblock %}
 
-
-{#{% extends 'music/base.html' %}#}
-{#{% block title %} Album Details {% endblock %}#}
-{##}
-{#{% block body %}#}
-{##}
-{#    <img src="{{ album.album_logo }}" >#}
-{##}
-{#    <h1>{{ album.album_title }}</h1>#}
-{#    <h2>{{ album.artist }}</h2>#}
-{##}
-{#    {% if error_message %}#}
-{##}
-{#        <p><strong>{{ error_message }}</strong></p>#}
-{##}
-{#    {% endif %}#}
-{##}
-{#    <form action="" method="post">#}
-{#        {% csrf_token %}#}
-{#        {% for song in album.song_set.all %}#}
-{#            <input type="radio" id="song{{ forloop.counter }}" name="song" value="{{ song.id }}" />#}
-{#            <label for="song{{ forloop.counter }}">#}
-{#                {{ song.song_title }}#}
-{#                {% if song.is_favorite %}#}
-{#                    <img src="https://www.cloudynights.com//public/style_images/master/star.png"/>#}
-{##}
-{#                {% endif %}#}
-{#            </label>#}
-{#            <br/>#}
-{#        {% endfor %}#}
-{#        <input type="submit" value="Favorite">#}
-{#    </form>#}
-{#{% endblock %}#}
 
