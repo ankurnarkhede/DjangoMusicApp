@@ -12,15 +12,20 @@ from django.http import JsonResponse
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, HttpResponseRedirect, HttpResponse
 from .models import Album, Song
+from django.contrib.auth.decorators import login_required
 
 
+
+
+
+
+# @login_required(redirect('music/login.html'))
 class IndexView(generic.ListView):
     template_name = 'music/index.html'
     context_object_name = 'all_albums'
 
     def get_queryset(self):
         return Album.objects.all()
-
 
 class DetailView(generic.DetailView):
     model = Album
