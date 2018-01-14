@@ -10,7 +10,7 @@ from django.core.urlresolvers import reverse
 from .forms import UserForm
 from django.http import JsonResponse
 from django.db.models import Q
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, HttpResponseRedirect, HttpResponse
 from .models import Album, Song
 
 
@@ -76,30 +76,52 @@ class UserFormView(View):
         return render (request, self.template_name, {'form': form})
 
 
-def logout_user(request):
-    logout (request)
-    form = UserForm (request.POST or None)
-    context = {
-        "form": form,
-    }
-    return render (request, 'music/login.html', context)
+class LoginView(View):
 
+    def get(self, request):
+        return render (request, "music/login.html")
 
-def login_user(request):
-    if request.method == "POST":
+    def post(self, request):
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(username=username, password=password)
+
         if user is not None:
             if user.is_active:
                 login(request, user)
-                albums = Album.objects.filter(user=request.user)
-                return render(request, 'music/index.html', {'albums': albums})
+
+                return HttpResponseRedirect(reverse ('music:index'))
             else:
-                return render(request, 'music/login.html', {'error_message': 'Your account has been disabled'})
+                return HttpResponse("Inactive user.")
         else:
-            return render(request, 'music/login.html', {'error_message': 'Invalid login'})
-    return render(request, 'music/login.html')
+            return HttpResponseRedirect (reverse ('music:login_user'))
+
+
+class LogoutView(View):
+    def get(self, request):
+        logout(request)
+        form = UserForm (request.POST or None)
+        # context = {
+        #     "form": form,
+        # }
+        return HttpResponseRedirect (reverse ('music:login_user'))
+
+
+# def login(request):
+#     if request.method == "POST":
+#         username = request.POST['username']
+#         password = request.POST['password']
+#         user = authenticate(username=username, password=password)
+#         if user is not None:
+#             if user.is_active:
+#                 login(request, user)
+#                 albums = Album.objects.filter(user=request.user)
+#                 return render(request, 'music/index.html', {'albums': albums})
+#             else:
+#                 return render(request, 'music/login.html', {'error_message': 'Your account has been disabled'})
+#         else:
+#             return render(request, 'music/login.html', {'error_message': 'Invalid login'})
+#     return render(request, 'music/login.html')
 
 
 
