@@ -3,8 +3,6 @@ from . import views
 from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
 
-
-
 app_name='music'
 
 
@@ -16,8 +14,11 @@ urlpatterns = [
 
     url (r'^logout/$', views.LogoutView.as_view(), name='logout'),
 
-    url (r'^login/$', views.LoginView.as_view(), name='login_user'),
+    url (r'^login/$', views.LoginView.as_view(), name='login_user' ),
+    # url (r'^login/$', views.LoginView.as_view(redirect_authenticated_user=True), name='login_user' ),
 
+
+    # music urls
     # /music/<album.id>...for album id
     url(r'^(?P<pk>[0-9]+)/$', views.DetailView.as_view(), name='detail'),
 

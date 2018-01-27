@@ -19,7 +19,7 @@ from django.contrib.auth import get_user_model
 
 
 
-
+@method_decorator(login_required, name='dispatch')
 class IndexView(generic.ListView):
     template_name = 'music/index.html'
     context_object_name = 'all_albums'
@@ -28,18 +28,25 @@ class IndexView(generic.ListView):
         return Album.objects.all()
 
 
+@method_decorator(login_required, name='dispatch')
 class DetailView(generic.DetailView):
     model = Album
     template_name ='music/detail.html'
 
+
+@method_decorator(login_required, name='dispatch')
 class AlbumCreate(CreateView):
     model = Album
     fields = ['artist', 'album_title', 'genre', 'album_logo']
 
+
+@method_decorator(login_required, name='dispatch')
 class AlbumUpdate(UpdateView):
     model = Album
     fields = ['artist', 'album_title', 'genre', 'album_logo']
 
+
+@method_decorator(login_required, name='dispatch')
 class AlbumDelete(DeleteView):
     model = Album
     success_url = reverse_lazy('music:index')
@@ -47,14 +54,19 @@ class AlbumDelete(DeleteView):
 
     
 # song crud
+@method_decorator(login_required, name='dispatch')
 class SongCreate(CreateView):
     model = Song
     fields = ['album', 'audio_file', 'song_title', 'is_favorite']
 
+
+@method_decorator(login_required, name='dispatch')
 class SongUpdate(UpdateView):
     model = Song
     fields = ['album', 'audio_file', 'song_title', 'is_favorite']
 
+
+@method_decorator(login_required, name='dispatch')
 class SongDelete(DeleteView):
     model = Song
 
@@ -65,18 +77,21 @@ class SongDelete(DeleteView):
 
     
 
-
 class UserFormView(View):
     form_class=UserForm
     template_name='music/registration_form.html'
 
     # display blank form
     def get(self, request):
+        if request.user.is_authenticated ():
+            return HttpResponseRedirect (reverse ('music:index'))
         form=self.form_class(None)
         return render(request, self.template_name, {'form':form})
 
     # process form data
     def post(self, request):
+        if request.user.is_authenticated ():
+            return HttpResponseRedirect(reverse ('music:index'))
         form=self.form_class(request.POST)
 
         if form.is_valid():
@@ -104,9 +119,13 @@ class UserFormView(View):
 class LoginView(View):
 
     def get(self, request):
+        if request.user.is_authenticated ():
+            return HttpResponseRedirect(reverse ('music:index'))
         return render (request, "music/login.html")
 
     def post(self, request):
+        if request.user.is_authenticated ():
+            return HttpResponseRedirect(reverse ('music:index'))
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(username=username, password=password)
@@ -122,6 +141,7 @@ class LoginView(View):
             return HttpResponseRedirect (reverse ('music:login_user'))
 
 
+@method_decorator(login_required, name='dispatch')
 class LogoutView(View):
     def get(self, request):
         logout(request)
@@ -130,6 +150,14 @@ class LogoutView(View):
         #     "form": form,
         # }
         return HttpResponseRedirect (reverse ('music:login_user'))
+
+
+
+
+
+
+
+
 
 
 # def login(request):

@@ -127,5 +127,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 
-# LOGIN_URL='/music/templates/music/login.html'
-# LOGIN_REDIRECT_URL='/music/templates/music/index.html'
+LOGIN_URL='/login/'
+LOGIN_REDIRECT_URL='/music/'
